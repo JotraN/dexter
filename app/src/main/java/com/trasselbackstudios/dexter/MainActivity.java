@@ -5,6 +5,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.trasselbackstudios.dexter.data.PokemonDatabase;
+
 public class MainActivity extends ActionBarActivity {
 
     @Override
@@ -16,6 +18,7 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PokemonFragment())
                     .commit();
         }
+        PokemonDatabase.forceDatabaseReload(this);
     }
 
     @Override

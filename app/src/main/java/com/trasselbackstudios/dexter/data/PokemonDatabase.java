@@ -9,7 +9,8 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 public class PokemonDatabase extends SQLiteAssetHelper {
     private static final String DATABASE_NAME = "pokemon.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
+    private static Boolean UPGRADED = false;
 
     public PokemonDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,7 +37,7 @@ public class PokemonDatabase extends SQLiteAssetHelper {
         return c;
     }
 
-    public Cursor getDetailsItems(String id){
+    public Cursor getDetailsItems(String id) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(PokemonContract.DetailsEntry.TABLE_NAME);
@@ -45,5 +46,13 @@ public class PokemonDatabase extends SQLiteAssetHelper {
         c.moveToFirst();
         db.close();
         return c;
+    }
+
+    public static void forceDatabaseReload(Context context){
+        PokemonDatabase dbHelper = new PokemonDatabase(context);
+        dbHelper.setForcedUpgradeVersion(DATABASE_VERSION);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.setVersion(-1);
+        db.close();
     }
 }
