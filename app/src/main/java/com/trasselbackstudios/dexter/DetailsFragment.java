@@ -75,7 +75,6 @@ public class DetailsFragment extends Fragment {
         for (int i = 0; i < pokemonEntries.size(); i++) {
             try {
                 Bitmap bitmap = getBitmap("images/" + pokemonEntries.get(i).id + ".png");
-                // TODO set sizes based upon evolutions numbers i.e. see pkID 133.
                 bitmap = resizeBitmap(bitmap, 300, 300);
                 bitmap = circleBitmap(bitmap, 200 / 2, 3);
                 ImageView imageView = new ImageView(rootView.getContext());
