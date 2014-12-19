@@ -72,6 +72,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/separator"
+        android:layout_marginBottom="10dp"
         android:text="@string/hello_world" />
 
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/text_view_desc"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/layout_evolutions"
+        android:layout_below="@id/separator2"
+        android:orientation="horizontal"
+        android:weightSum="2"/>
 </RelativeLayout>

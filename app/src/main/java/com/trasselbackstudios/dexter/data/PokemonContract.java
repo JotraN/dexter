@@ -18,5 +18,6 @@ public class PokemonContract {
         public static final String COLUMN_WEIGHT = "weight";
         public static final String COLUMN_SPECIES = "species";
         public static final String COLUMN_DESC = "desc";
+        public static final String COLUMN_EVO = "evo";
     }
 }

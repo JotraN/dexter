@@ -17,12 +17,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.trasselbackstudios.dexter.data.PokemonTypes;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class DetailsFragment extends Fragment {
     @Override
@@ -37,27 +39,54 @@ public class DetailsFragment extends Fragment {
         TextView heightWidth = (TextView) rootView.findViewById(R.id.text_view_height_width);
         TextView desc = (TextView) rootView.findViewById(R.id.text_view_desc);
 
-        Pokemon pokemon = new Pokemon(rootView.getContext(), getArguments().getString(Intent.EXTRA_TEXT));
-        String paddedId = String.format("%03d", Integer.parseInt(pokemon.id));
-        String formattedHeight = Integer.parseInt(pokemon.height) / 12 + "'"
-                + String.format("%02d", (Integer.parseInt(pokemon.height) - 12 * (Integer.parseInt(pokemon.height) / 12))) + "\" ";
+        PokemonEntry pokemonEntry = new PokemonEntry(rootView.getContext(), getArguments().getString(Intent.EXTRA_TEXT));
+        String paddedId = String.format("%03d", Integer.parseInt(pokemonEntry.id));
+        String formattedHeight = Integer.parseInt(pokemonEntry.height) / 12 + "'"
+                + String.format("%02d", (Integer.parseInt(pokemonEntry.height) - 12 * (Integer.parseInt(pokemonEntry.height) / 12))) + "\" ";
 
-        name.setText(pokemon.name);
-        species.setText(pokemon.species);
-        types.setText(Html.fromHtml(getColoredTypes(pokemon.types)));
+        name.setText(pokemonEntry.name);
+        species.setText(pokemonEntry.species);
+        types.setText(Html.fromHtml(getColoredTypes(pokemonEntry.types)));
         id.setText("No." + paddedId);
-        heightWidth.setText("Ht: " + formattedHeight + "Wt: " + pokemon.weight + " lbs");
-        desc.setText(pokemon.desc);
+        heightWidth.setText("Ht: " + formattedHeight + "Wt: " + pokemonEntry.weight + " lbs");
+        desc.setText(pokemonEntry.desc);
 
         ImageView image = (ImageView) rootView.findViewById(R.id.image_view_pokemon);
         try {
-            Bitmap bitmap = getBitmap("images/" + pokemon.id + ".png");
+            Bitmap bitmap = getBitmap("images/" + pokemonEntry.id + ".png");
+            bitmap = resizeBitmap(bitmap, 500, 500);
+            bitmap = circleBitmap(bitmap, 500 / 2, 3);
             image.setImageBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        setupEvolutions(rootView, pokemonEntry);
+
         return rootView;
+    }
+
+    private void setupEvolutions(View rootView, PokemonEntry pokemonEntry) {
+        ArrayList<PokemonEntry> pokemonEntries = pokemonEntry.getEvolutions(rootView.getContext());
+        if (pokemonEntries == null) return;
+        rootView.findViewById(R.id.separator2).setVisibility(View.VISIBLE);
+        LinearLayout evolutionsLayout = (LinearLayout) rootView.findViewById(R.id.layout_evolutions);
+        int weight = pokemonEntries.size() == 1 ? 2 : 1;
+        for (int i = 0; i < pokemonEntries.size(); i++) {
+            try {
+                Bitmap bitmap = getBitmap("images/" + pokemonEntries.get(i).id + ".png");
+                // TODO set sizes based upon evolutions numbers i.e. see pkID 133.
+                bitmap = resizeBitmap(bitmap, 300, 300);
+                bitmap = circleBitmap(bitmap, 200 / 2, 3);
+                ImageView imageView = new ImageView(rootView.getContext());
+                imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT, weight));
+                imageView.setImageBitmap(bitmap);
+                evolutionsLayout.addView(imageView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private String getColoredTypes(String types) {
@@ -75,8 +104,6 @@ public class DetailsFragment extends Fragment {
         AssetManager assetManager = getActivity().getAssets();
         InputStream inputStream = assetManager.open(strName);
         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-        bitmap = resizeBitmap(bitmap, 500, 500);
-        bitmap = circleBitmap(bitmap, 500/2, 3);
         return bitmap;
     }
 

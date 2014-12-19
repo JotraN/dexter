@@ -10,7 +10,6 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 public class PokemonDatabase extends SQLiteAssetHelper {
     private static final String DATABASE_NAME = "pokemon.db";
     private static final int DATABASE_VERSION = 2;
-    private static Boolean UPGRADED = false;
 
     public PokemonDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

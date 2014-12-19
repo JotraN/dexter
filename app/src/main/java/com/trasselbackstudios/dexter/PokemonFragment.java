@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +43,7 @@ public class PokemonFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String item = adapter.getItem(position);
-                String pkID  = item.substring(0, item.indexOf("."));
+                String pkID  = item.substring(0, item.indexOf(" ")).replaceAll("^0+", "");
                 Intent intent = new Intent(getActivity(), DetailsActivity.class).putExtra(Intent.EXTRA_TEXT, pkID);
                 startActivity(intent);
             }
@@ -56,11 +57,11 @@ public class PokemonFragment extends Fragment {
         Cursor c = db.getPokemonItems();
         ArrayList<String> names = new ArrayList<>();
         String id = c.getString(c.getColumnIndex(PokemonContract.PokemonEntry.COLUMN_ID));
-        names.add(id + ". " + c.getString(c.getColumnIndex(PokemonContract.PokemonEntry.COLUMN_NAME)));
+        names.add(String.format("%03d", Integer.parseInt(id)) + " " + c.getString(c.getColumnIndex(PokemonContract.PokemonEntry.COLUMN_NAME)));
         while (c.moveToNext()) {
             String name = c.getString(c.getColumnIndex(PokemonContract.PokemonEntry.COLUMN_NAME));
             id = c.getString(c.getColumnIndex(PokemonContract.PokemonEntry.COLUMN_ID));
-            names.add(id + ". " + name);
+            names.add(String.format("%03d", Integer.parseInt(id)) + " " + name);
         }
         c.close();
         db.close();
