@@ -83,7 +83,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_desc"
         android:text="@string/pokemon_evolutions"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <View
         android:id="@+id/separator2"

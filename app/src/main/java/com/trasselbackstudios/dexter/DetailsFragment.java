@@ -13,15 +13,12 @@ import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.trasselbackstudios.dexter.data.PokemonTypes;
 
@@ -39,7 +36,7 @@ public class DetailsFragment extends Fragment {
         return rootView;
     }
 
-    private void setupDetails(View rootView, PokemonEntry pokemonEntry){
+    private void setupDetails(View rootView, PokemonEntry pokemonEntry) {
         TextView name = (TextView) rootView.findViewById(R.id.text_view_name);
         TextView types = (TextView) rootView.findViewById(R.id.text_view_types);
         TextView species = (TextView) rootView.findViewById(R.id.text_view_species);
@@ -74,6 +71,7 @@ public class DetailsFragment extends Fragment {
         ArrayList<PokemonEntry> pokemonEntries = pokemonEntry.getEvolutions(rootView.getContext());
         if (pokemonEntries == null) return;
         rootView.findViewById(R.id.separator2).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.text_view_evolutions).setVisibility(View.VISIBLE);
         LinearLayout evolutionsLayout = (LinearLayout) rootView.findViewById(R.id.layout_evolutions);
         evolutionsLayout.removeAllViewsInLayout();
         int weight = pokemonEntries.size() == 1 ? 2 : 1;
@@ -82,6 +80,10 @@ public class DetailsFragment extends Fragment {
                 Bitmap bitmap = getBitmap("images/" + pokemonEntries.get(i).id + ".png");
                 bitmap = resizeBitmap(bitmap, 300, 300);
                 bitmap = circleBitmap(bitmap, 200 / 2, 3);
+                String evoText = String.format("%5s", "to");
+                if (Integer.parseInt(pokemonEntry.id) > Integer.parseInt(pokemonEntries.get(i).id))
+                    evoText = "from";
+                bitmap = drawText(bitmap, evoText);
                 ImageView imageView = new ImageView(rootView.getContext());
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT, weight));
@@ -108,8 +110,7 @@ public class DetailsFragment extends Fragment {
     private Bitmap getBitmap(String strName) throws IOException {
         AssetManager assetManager = getActivity().getAssets();
         InputStream inputStream = assetManager.open(strName);
-        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-        return bitmap;
+        return BitmapFactory.decodeStream(inputStream);
     }
 
     private Bitmap resizeBitmap(Bitmap bitmap, int newWidth, int newHeight) {
@@ -140,10 +141,28 @@ public class DetailsFragment extends Fragment {
         return bitmap;
     }
 
+    private Bitmap drawText(Bitmap orig, String text) {
+        int width = orig.getWidth();
+        int height = orig.getHeight();
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        BitmapShader bitmapShader = new BitmapShader(orig, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setShader(bitmapShader);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawBitmap(orig, 0, 0, paint);
+        paint.setShader(null);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.DKGRAY);
+        paint.setTextSize(40);
+        canvas.drawText(text, width / 3, height, paint);
+        return bitmap;
+    }
+
     private class OnEvolutionClickListener implements View.OnClickListener {
         private final String id;
 
-        public OnEvolutionClickListener(String id){
+        public OnEvolutionClickListener(String id) {
             this.id = id;
         }
 
