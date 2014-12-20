@@ -28,11 +28,11 @@ public class DetailsActivity extends ActionBarActivity {
     }
 
     private void setTitle(String id){
-        PokemonDatabase mDb = new PokemonDatabase(this);
-        Cursor cursor = mDb.getDetailsItems(id);
+        PokemonDatabase db = new PokemonDatabase(this);
+        Cursor cursor = db.getDetailsItems(id);
         String name = cursor.getString(cursor.getColumnIndex(PokemonContract.DetailsEntry.COLUMN_NAME));
         cursor.close();
-        mDb.close();
+        db.close();
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(name);

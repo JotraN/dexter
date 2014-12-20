@@ -13,12 +13,15 @@ import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.trasselbackstudios.dexter.data.PokemonTypes;
 
@@ -31,7 +34,12 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
+        PokemonEntry pokemonEntry = new PokemonEntry(rootView.getContext(), getArguments().getString(Intent.EXTRA_TEXT));
+        setupDetails(rootView, pokemonEntry);
+        return rootView;
+    }
 
+    private void setupDetails(View rootView, PokemonEntry pokemonEntry){
         TextView name = (TextView) rootView.findViewById(R.id.text_view_name);
         TextView types = (TextView) rootView.findViewById(R.id.text_view_types);
         TextView species = (TextView) rootView.findViewById(R.id.text_view_species);
@@ -39,7 +47,6 @@ public class DetailsFragment extends Fragment {
         TextView heightWidth = (TextView) rootView.findViewById(R.id.text_view_height_width);
         TextView desc = (TextView) rootView.findViewById(R.id.text_view_desc);
 
-        PokemonEntry pokemonEntry = new PokemonEntry(rootView.getContext(), getArguments().getString(Intent.EXTRA_TEXT));
         String paddedId = String.format("%03d", Integer.parseInt(pokemonEntry.id));
         String formattedHeight = Integer.parseInt(pokemonEntry.height) / 12 + "'"
                 + String.format("%02d", (Integer.parseInt(pokemonEntry.height) - 12 * (Integer.parseInt(pokemonEntry.height) / 12))) + "\" ";
@@ -60,10 +67,7 @@ public class DetailsFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         setupEvolutions(rootView, pokemonEntry);
-
-        return rootView;
     }
 
     private void setupEvolutions(View rootView, PokemonEntry pokemonEntry) {
@@ -71,6 +75,7 @@ public class DetailsFragment extends Fragment {
         if (pokemonEntries == null) return;
         rootView.findViewById(R.id.separator2).setVisibility(View.VISIBLE);
         LinearLayout evolutionsLayout = (LinearLayout) rootView.findViewById(R.id.layout_evolutions);
+        evolutionsLayout.removeAllViewsInLayout();
         int weight = pokemonEntries.size() == 1 ? 2 : 1;
         for (int i = 0; i < pokemonEntries.size(); i++) {
             try {
@@ -81,6 +86,7 @@ public class DetailsFragment extends Fragment {
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT, weight));
                 imageView.setImageBitmap(bitmap);
+                imageView.setOnClickListener(new OnEvolutionClickListener(pokemonEntries.get(i).id));
                 evolutionsLayout.addView(imageView);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -133,4 +139,18 @@ public class DetailsFragment extends Fragment {
         canvas.drawCircle(width / 2, height / 2, radius - border / 2, paint);
         return bitmap;
     }
+
+    private class OnEvolutionClickListener implements View.OnClickListener {
+        private final String id;
+
+        public OnEvolutionClickListener(String id){
+            this.id = id;
+        }
+
+        @Override
+        public void onClick(View v) {
+            setupDetails(v.getRootView(), new PokemonEntry(v.getContext(), id));
+        }
+    }
+
 }
