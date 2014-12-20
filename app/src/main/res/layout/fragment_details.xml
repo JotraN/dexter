@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
         android:padding="0dp"
-        android:text="@string/hello_world"
+        android:text="@string/pokemon_name"
         android:textSize="@dimen/abc_text_size_headline_material" />
 
     <TextView
@@ -22,32 +22,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_name"
-        android:text="@string/hello_world" />
+        android:text="@string/pokemon_types" />
 
     <TextView
         android:id="@+id/text_view_species"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_name"
-        android:layout_toRightOf="@+id/text_view_types"
-        android:gravity="right"
-        android:text="@string/hello_world" />
+        android:layout_toEndOf="@+id/text_view_types"
+        android:gravity="end"
+        android:text="@string/pokemon_species" />
 
     <ImageView
         android:id="@+id/image_view_pokemon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_types"
-        android:clickable="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:contentDescription="@string/pokemon_image" />
 
     <TextView
         android:id="@+id/text_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image_view_pokemon"
-        android:text="@string/hello_world"
+        android:text="@string/pokemon_id"
         android:textStyle="bold" />
 
     <TextView
@@ -55,9 +56,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image_view_pokemon"
-        android:layout_toRightOf="@+id/text_view_id"
-        android:gravity="right"
-        android:text="@string/hello_world"
+        android:layout_toEndOf="@+id/text_view_id"
+        android:gravity="end"
+        android:text="@string/pokemon_height_weight"
         android:textStyle="bold" />
 
     <View
@@ -74,13 +75,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/separator"
         android:layout_marginBottom="10dp"
-        android:text="@string/hello_world" />
+        android:text="@string/pokemon_desc" />
+
+    <TextView
+        android:id="@+id/text_view_evolutions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_desc"
+        android:text="@string/pokemon_evolutions"
+        android:textStyle="bold" />
 
     <View
         android:id="@+id/separator2"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/text_view_desc"
+        android:layout_below="@+id/text_view_evolutions"
         android:background="@android:color/darker_gray"
         android:visibility="gone" />
 
@@ -88,8 +97,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/separator2"
-        android:fillViewport="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:fillViewport="true">
 
         <LinearLayout
             android:id="@+id/layout_evolutions"

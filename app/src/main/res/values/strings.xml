@@ -2,9 +2,15 @@
 <resources>
 
     <string name="app_name">Dexter</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_activity_details">Details</string>
+    <string name="pokemon_name">Name</string>
+    <string name="pokemon_id">No.000</string>
+    <string name="pokemon_types">Types</string>
+    <string name="pokemon_species">Species</string>
+    <string name="pokemon_desc">Description</string>
+    <string name="pokemon_height_weight">Height, Weight</string>
+    <string name="pokemon_image">Pokemon Image</string>
+    <string name="pokemon_evolutions">Evolution</string>
 
 </resources>
