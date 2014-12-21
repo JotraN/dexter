@@ -73,11 +73,15 @@ public class DetailsFragment extends Fragment {
 
     private void setupEvolutions(View rootView, PokemonEntry pokemonEntry) {
         ArrayList<PokemonEntry> pokemonEntries = pokemonEntry.getEvolutions(rootView.getContext());
-        if (pokemonEntries == null) return;
-        rootView.findViewById(R.id.separator2).setVisibility(View.VISIBLE);
-        rootView.findViewById(R.id.text_view_evolutions).setVisibility(View.VISIBLE);
         LinearLayout evolutionsLayout = (LinearLayout) rootView.findViewById(R.id.layout_evolutions);
         evolutionsLayout.removeAllViewsInLayout();
+        if (pokemonEntries == null){
+            rootView.findViewById(R.id.separator2).setVisibility(View.GONE);
+            rootView.findViewById(R.id.text_view_evolutions).setVisibility(View.GONE);
+            return;
+        }
+        rootView.findViewById(R.id.separator2).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.text_view_evolutions).setVisibility(View.VISIBLE);
         int weight = pokemonEntries.size() == 1 ? 2 : 1;
         for (int i = 0; i < pokemonEntries.size(); i++) {
             try {
