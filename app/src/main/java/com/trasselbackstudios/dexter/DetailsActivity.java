@@ -1,18 +1,13 @@
 package com.trasselbackstudios.dexter;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-
-import com.trasselbackstudios.dexter.data.PokemonContract;
-import com.trasselbackstudios.dexter.data.PokemonDatabase;
 
 
 public class DetailsActivity extends ActionBarActivity {
@@ -24,7 +19,7 @@ public class DetailsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        mDetector = new GestureDetectorCompat(this, new MyGestureListener());
+        mDetector = new GestureDetectorCompat(this, new NextPokemonGesture());
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -50,7 +45,7 @@ public class DetailsActivity extends ActionBarActivity {
         return super.onTouchEvent(event);
     }
 
-    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+    private class NextPokemonGesture extends GestureDetector.SimpleOnGestureListener {
         private int max = 719;
         private int min = 1;
 
