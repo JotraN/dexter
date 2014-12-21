@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,10 @@ public class DetailsFragment extends Fragment {
         return rootView;
     }
 
-    private void setupDetails(View rootView, PokemonEntry pokemonEntry) {
+    public void setupDetails(View rootView, PokemonEntry pokemonEntry) {
+        if (((ActionBarActivity) getActivity()).getSupportActionBar() != null)
+            ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(pokemonEntry.name);
+        ((DetailsActivity) getActivity()).setPokemonID(pokemonEntry.id);
         TextView name = (TextView) rootView.findViewById(R.id.text_view_name);
         TextView types = (TextView) rootView.findViewById(R.id.text_view_types);
         TextView species = (TextView) rootView.findViewById(R.id.text_view_species);
@@ -80,9 +84,9 @@ public class DetailsFragment extends Fragment {
                 Bitmap bitmap = getBitmap("images/" + pokemonEntries.get(i).id + ".png");
                 bitmap = resizeBitmap(bitmap, 300, 300);
                 bitmap = circleBitmap(bitmap, 200 / 2, 3);
-                String evoText = String.format("%5s", "to");
-                if (Integer.parseInt(pokemonEntry.id) > Integer.parseInt(pokemonEntries.get(i).id))
-                    evoText = "from";
+                String evoText = "→";
+                if (pokemonEntry.getEvoLevel() > pokemonEntries.get(i).getEvoLevel())
+                    evoText = "←";
                 bitmap = drawText(bitmap, evoText);
                 ImageView imageView = new ImageView(rootView.getContext());
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -144,6 +148,7 @@ public class DetailsFragment extends Fragment {
     private Bitmap drawText(Bitmap orig, String text) {
         int width = orig.getWidth();
         int height = orig.getHeight();
+        int textSize = 75;
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         BitmapShader bitmapShader = new BitmapShader(orig, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         Paint paint = new Paint();
@@ -154,7 +159,7 @@ public class DetailsFragment extends Fragment {
         paint.setShader(null);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.DKGRAY);
-        paint.setTextSize(40);
+        paint.setTextSize(textSize);
         canvas.drawText(text, width / 3, height, paint);
         return bitmap;
     }
@@ -171,5 +176,4 @@ public class DetailsFragment extends Fragment {
             setupDetails(v.getRootView(), new PokemonEntry(v.getContext(), id));
         }
     }
-
 }
