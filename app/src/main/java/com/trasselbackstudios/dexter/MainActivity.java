@@ -19,6 +19,7 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
         PokemonDatabase.forceDatabaseReload(this);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     @Override

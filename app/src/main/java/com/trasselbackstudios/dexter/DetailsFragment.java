@@ -1,5 +1,7 @@
 package com.trasselbackstudios.dexter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -28,11 +30,21 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class DetailsFragment extends Fragment {
+    private View mContentView;
+    private View mLoadingView;
+    private int mShortAnimationDuration;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         PokemonEntry pokemonEntry = new PokemonEntry(rootView.getContext(), getArguments().getString(Intent.EXTRA_TEXT));
+
+        mContentView = rootView.findViewById(R.id.layout_details);
+        mLoadingView = rootView.findViewById(R.id.loading_spinner);
+        mShortAnimationDuration = getResources().getInteger(
+                android.R.integer.config_shortAnimTime);
+
         setupDetails(rootView, pokemonEntry);
         return rootView;
     }
@@ -40,6 +52,8 @@ public class DetailsFragment extends Fragment {
     public void setupDetails(View rootView, PokemonEntry pokemonEntry) {
         if (((ActionBarActivity) getActivity()).getSupportActionBar() != null)
             ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(pokemonEntry.name);
+
+        crossfade();
         ((DetailsActivity) getActivity()).setPokemonID(pokemonEntry.id);
         TextView name = (TextView) rootView.findViewById(R.id.text_view_name);
         TextView types = (TextView) rootView.findViewById(R.id.text_view_types);
@@ -75,7 +89,7 @@ public class DetailsFragment extends Fragment {
         ArrayList<PokemonEntry> pokemonEntries = pokemonEntry.getEvolutions(rootView.getContext());
         LinearLayout evolutionsLayout = (LinearLayout) rootView.findViewById(R.id.layout_evolutions);
         evolutionsLayout.removeAllViewsInLayout();
-        if (pokemonEntries == null){
+        if (pokemonEntries == null) {
             rootView.findViewById(R.id.separator2).setVisibility(View.GONE);
             rootView.findViewById(R.id.text_view_evolutions).setVisibility(View.GONE);
             return;
@@ -179,5 +193,22 @@ public class DetailsFragment extends Fragment {
         public void onClick(View v) {
             setupDetails(v.getRootView(), new PokemonEntry(v.getContext(), id));
         }
+    }
+
+    private void crossfade() {
+        mContentView.setAlpha(0f);
+        mContentView.animate()
+                .alpha(1f)
+                .setDuration(mShortAnimationDuration)
+                .setListener(null);
+        mLoadingView.animate()
+                .alpha(0f)
+                .setDuration(mShortAnimationDuration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mLoadingView.setVisibility(View.GONE);
+                    }
+                });
     }
 }

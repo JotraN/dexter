@@ -27,6 +27,7 @@ public class DetailsActivity extends ActionBarActivity {
             if (savedInstanceState == null)
                 sendToFragment(pokemonID);
         }
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void sendToFragment(String id) {
