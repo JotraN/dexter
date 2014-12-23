@@ -196,6 +196,7 @@ public class DetailsFragment extends Fragment {
     }
 
     private void crossfade() {
+        mLoadingView.setVisibility(View.VISIBLE);
         mContentView.setAlpha(0f);
         mContentView.animate()
                 .alpha(1f)

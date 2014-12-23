@@ -30,6 +30,12 @@ public class DetailsActivity extends ActionBarActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     private void sendToFragment(String id) {
         Bundle bundle = new Bundle();
         bundle.putString(Intent.EXTRA_TEXT, id);
