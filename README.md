@@ -6,6 +6,7 @@ Images were also acquired from Bulbapedia.<br>
 Screenshots:<br>
 <img src="screenshots/default.png" alt="default" width="300px"/>
 <img src="screenshots/details.png" alt="details" width="300px"/><br>
+<img src="screenshots/typesinfo.png" alt="types info" width="300px"/><br>
 
 <h1>installation instructions</h1>
 <em>This requires your phone to have at least Android 4.2 Jelly Bean (API level 17).</em><br>
