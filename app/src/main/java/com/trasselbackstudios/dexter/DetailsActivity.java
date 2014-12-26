@@ -14,7 +14,7 @@ import com.trasselbackstudios.dexter.data.PokemonItem;
 
 public class DetailsActivity extends ActionBarActivity {
     private GestureDetectorCompat mDetector;
-    private DetailsFragment detailsFragment;
+    private DetailsFragment detailsFragment = null;
     private static String pokemonID = "";
 
     @Override
@@ -38,9 +38,10 @@ public class DetailsActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        sendToFragment(pokemonID);
+        if(detailsFragment == null)
+            sendToFragment(pokemonID);
     }
 
     private void sendToFragment(String id) {
@@ -71,7 +72,8 @@ public class DetailsActivity extends ActionBarActivity {
                 if (velocityX > 0)
                     next = Integer.parseInt(pokemonID) - 1;
                 if (next < min || next > max) return true;
-                detailsFragment.setupDetails(getWindow().getDecorView().getRootView(), new PokemonItem(getApplicationContext(), String.valueOf(next)));
+                pokemonID = String.valueOf(next);
+                detailsFragment.setupDetails(getWindow().getDecorView().getRootView(), new PokemonItem(getApplicationContext(), pokemonID));
             }
             return true;
         }
