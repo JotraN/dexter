@@ -47,6 +47,17 @@ public class PokemonDatabase extends SQLiteAssetHelper {
         return c;
     }
 
+    public Cursor getTypeEffectivenessItems(String id) {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(PokemonContract.TypeEffectivenessEntry.TABLE_NAME);
+        String[] ids = {id};
+        Cursor c = qb.query(db, null, "_id = ?", ids, null, null, null);
+        c.moveToFirst();
+        db.close();
+        return c;
+    }
+
     public static void forceDatabaseReload(Context context){
         PokemonDatabase dbHelper = new PokemonDatabase(context);
         dbHelper.setForcedUpgradeVersion(DATABASE_VERSION);

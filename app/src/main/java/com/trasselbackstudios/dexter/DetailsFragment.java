@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.trasselbackstudios.dexter.data.PokemonItem;
 import com.trasselbackstudios.dexter.data.PokemonTypes;
 
 import java.io.IOException;
@@ -38,23 +39,23 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-        PokemonEntry pokemonEntry = new PokemonEntry(rootView.getContext(), getArguments().getString(Intent.EXTRA_TEXT));
+        PokemonItem pokemonItem = new PokemonItem(rootView.getContext(), getArguments().getString(Intent.EXTRA_TEXT));
 
         mContentView = rootView.findViewById(R.id.layout_details);
         mLoadingView = rootView.findViewById(R.id.loading_spinner);
         mShortAnimationDuration = getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
 
-        setupDetails(rootView, pokemonEntry);
+        setupDetails(rootView, pokemonItem);
         return rootView;
     }
 
-    public void setupDetails(View rootView, PokemonEntry pokemonEntry) {
+    public void setupDetails(View rootView, PokemonItem pokemonItem) {
         if (((ActionBarActivity) getActivity()).getSupportActionBar() != null)
-            ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(pokemonEntry.name);
+            ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(pokemonItem.name);
 
         crossfade();
-        ((DetailsActivity) getActivity()).setPokemonID(pokemonEntry.id);
+        ((DetailsActivity) getActivity()).setPokemonID(pokemonItem.id);
         TextView name = (TextView) rootView.findViewById(R.id.text_view_name);
         TextView types = (TextView) rootView.findViewById(R.id.text_view_types);
         TextView species = (TextView) rootView.findViewById(R.id.text_view_species);
@@ -62,31 +63,31 @@ public class DetailsFragment extends Fragment {
         TextView heightWidth = (TextView) rootView.findViewById(R.id.text_view_height_width);
         TextView desc = (TextView) rootView.findViewById(R.id.text_view_desc);
 
-        String paddedId = String.format("%03d", Integer.parseInt(pokemonEntry.id));
-        String formattedHeight = Integer.parseInt(pokemonEntry.height) / 12 + "'"
-                + String.format("%02d", (Integer.parseInt(pokemonEntry.height) - 12 * (Integer.parseInt(pokemonEntry.height) / 12))) + "\" ";
+        String paddedId = String.format("%03d", Integer.parseInt(pokemonItem.id));
+        String formattedHeight = Integer.parseInt(pokemonItem.height) / 12 + "'"
+                + String.format("%02d", (Integer.parseInt(pokemonItem.height) - 12 * (Integer.parseInt(pokemonItem.height) / 12))) + "\" ";
 
-        name.setText(pokemonEntry.name);
-        species.setText(pokemonEntry.species);
-        types.setText(Html.fromHtml(getColoredTypes(pokemonEntry.types)));
+        name.setText(pokemonItem.name);
+        species.setText(pokemonItem.species);
+        types.setText(Html.fromHtml(getColoredTypes(pokemonItem.types)));
         id.setText("No." + paddedId);
-        heightWidth.setText("Ht: " + formattedHeight + "Wt: " + pokemonEntry.weight + " lbs");
-        desc.setText(pokemonEntry.desc);
+        heightWidth.setText("Ht: " + formattedHeight + "Wt: " + pokemonItem.weight + " lbs");
+        desc.setText(pokemonItem.desc);
 
         ImageView image = (ImageView) rootView.findViewById(R.id.image_view_pokemon);
         try {
-            Bitmap bitmap = getBitmap("images/" + pokemonEntry.id + ".png");
+            Bitmap bitmap = getBitmap("images/" + pokemonItem.id + ".png");
             bitmap = resizeBitmap(bitmap, 500, 500);
             bitmap = circleBitmap(bitmap, 500 / 2, 3);
             image.setImageBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setupEvolutions(rootView, pokemonEntry);
+        setupEvolutions(rootView, pokemonItem);
     }
 
-    private void setupEvolutions(View rootView, PokemonEntry pokemonEntry) {
-        ArrayList<PokemonEntry> pokemonEntries = pokemonEntry.getEvolutions(rootView.getContext());
+    private void setupEvolutions(View rootView, PokemonItem pokemonItem) {
+        ArrayList<PokemonItem> pokemonEntries = pokemonItem.getEvolutions(rootView.getContext());
         LinearLayout evolutionsLayout = (LinearLayout) rootView.findViewById(R.id.layout_evolutions);
         evolutionsLayout.removeAllViewsInLayout();
         if (pokemonEntries == null) {
@@ -103,7 +104,7 @@ public class DetailsFragment extends Fragment {
                 bitmap = resizeBitmap(bitmap, 300, 300);
                 bitmap = circleBitmap(bitmap, 200 / 2, 3);
                 String evoText = "→";
-                if (pokemonEntry.getEvoLevel() > pokemonEntries.get(i).getEvoLevel())
+                if (pokemonItem.getEvoLevel() > pokemonEntries.get(i).getEvoLevel())
                     evoText = "←";
                 bitmap = drawText(bitmap, evoText);
                 ImageView imageView = new ImageView(rootView.getContext());
@@ -191,7 +192,7 @@ public class DetailsFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            setupDetails(v.getRootView(), new PokemonEntry(v.getContext(), id));
+            setupDetails(v.getRootView(), new PokemonItem(v.getContext(), id));
         }
     }
 

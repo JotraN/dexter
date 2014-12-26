@@ -9,11 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 
+import com.trasselbackstudios.dexter.data.PokemonItem;
+
 
 public class DetailsActivity extends ActionBarActivity {
     private GestureDetectorCompat mDetector;
     private DetailsFragment detailsFragment;
-    private String pokemonID = "";
+    private static String pokemonID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +29,18 @@ public class DetailsActivity extends ActionBarActivity {
             if (savedInstanceState == null)
                 sendToFragment(pokemonID);
         }
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        sendToFragment(pokemonID);
     }
 
     private void sendToFragment(String id) {
@@ -64,7 +71,7 @@ public class DetailsActivity extends ActionBarActivity {
                 if (velocityX > 0)
                     next = Integer.parseInt(pokemonID) - 1;
                 if (next < min || next > max) return true;
-                detailsFragment.setupDetails(getWindow().getDecorView().getRootView(), new PokemonEntry(getApplicationContext(), String.valueOf(next)));
+                detailsFragment.setupDetails(getWindow().getDecorView().getRootView(), new PokemonItem(getApplicationContext(), String.valueOf(next)));
             }
             return true;
         }
@@ -79,7 +86,15 @@ public class DetailsActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        switch (id) {
+            case R.id.action_type_effectiveness:
+                Intent intent = new Intent(this, TypeEffectivenessActivity.class).putExtra(Intent.EXTRA_TEXT, pokemonID);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void setPokemonID(String id) {

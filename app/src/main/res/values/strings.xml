@@ -3,6 +3,7 @@
 
     <string name="app_name">Dexter</string>
     <string name="action_settings">Settings</string>
+    <string name="action_type_effectiveness">Type Effectiveness</string>
     <string name="title_activity_details">Details</string>
     <string name="pokemon_name">Name</string>
     <string name="pokemon_id">No.000</string>
@@ -12,5 +13,11 @@
     <string name="pokemon_height_weight">Height, Weight</string>
     <string name="pokemon_image">Pokemon Image</string>
     <string name="pokemon_evolutions">Evolution</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_type_effectiveness">TypeEffectivenessActivity</string>
+    <string name="title_weaknesses">Weakness</string>
+    <string name="title_normal">Normal</string>
+    <string name="title_immune">Immunity</string>
+    <string name="title_resistance">Resistance</string>
 
 </resources>

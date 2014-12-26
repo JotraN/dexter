@@ -1,14 +1,11 @@
-package com.trasselbackstudios.dexter;
+package com.trasselbackstudios.dexter.data;
 
 import android.content.Context;
 import android.database.Cursor;
 
-import com.trasselbackstudios.dexter.data.PokemonContract;
-import com.trasselbackstudios.dexter.data.PokemonDatabase;
-
 import java.util.ArrayList;
 
-public class PokemonEntry {
+public class PokemonItem {
     public final String id;
     public final String name;
     public final String height;
@@ -19,7 +16,7 @@ public class PokemonEntry {
     public final String evo;
     private int evoLevel = 0;
 
-    public PokemonEntry(Context context, String id) {
+    public PokemonItem(Context context, String id) {
         this.id = id;
         PokemonDatabase db = new PokemonDatabase(context);
         Cursor cursor = db.getDetailsItems(id);
@@ -34,20 +31,20 @@ public class PokemonEntry {
         db.close();
     }
 
-    public ArrayList<PokemonEntry> getEvolutions(Context context) {
+    public ArrayList<PokemonItem> getEvolutions(Context context) {
         if (evo.equals("")) return null;
-        ArrayList<PokemonEntry> pokemonEntries = new ArrayList<>();
+        ArrayList<PokemonItem> pokemonEntries = new ArrayList<>();
         String[] evolutions = evo.split(",");
         PokemonDatabase db = new PokemonDatabase(context);
         for (String evolution : evolutions) {
             String name = evolution.substring(2);
             Cursor cursor = db.getPokemonId(name);
             String id = cursor.getString(0);
-            PokemonEntry pokemonEntry = new PokemonEntry(context, id);
-            pokemonEntry.setEvoLevel(Integer.parseInt(evolution.substring(0, 1)));
-            if (pokemonEntry.getEvoLevel() <= this.evoLevel)
+            PokemonItem pokemonItem = new PokemonItem(context, id);
+            pokemonItem.setEvoLevel(Integer.parseInt(evolution.substring(0, 1)));
+            if (pokemonItem.getEvoLevel() <= this.evoLevel)
                 this.evoLevel++;
-            pokemonEntries.add(pokemonEntry);
+            pokemonEntries.add(pokemonItem);
             cursor.close();
         }
         db.close();
