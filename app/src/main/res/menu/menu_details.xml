@@ -2,6 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.trasselbackstudios.dexter.DetailsActivity">
-    <item android:id="@+id/action_type_effectiveness" android:title="@string/action_type_effectiveness"
-        android:orderInCategory="100" app:showAsAction="always" />
+    <item
+        android:id="@+id/action_type_effectiveness"
+        android:orderInCategory="100"
+        android:title="@string/action_type_effectiveness"
+        app:showAsAction="always" />
 </menu>
