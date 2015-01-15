@@ -1,0 +1,37 @@
+body {
+	background: #7e7e7c;
+	color: white;
+	margin: 0;
+	padding: 0;
+}
+
+#content {
+	margin: 3% auto 0 auto;
+	width: 275px;
+}
+
+a {
+	color: #FFCDD2;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+#header {
+	background: #D32F2F;
+	height: 265px;
+	width: 100%;
+}
+
+#title {
+	color: #F7F7F7;
+	display: block;
+	font-family: 'Lobster', cursive;
+	font-size: 200px;
+	margin: 0 auto 0 auto;
+	text-shadow: 10px 10px #607D8B;
+	width: 550px;
+}
