@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,20 +17,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailsActivity"
+            android:name=".activities.DetailsActivity"
             android:label="@string/title_activity_details"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.trasselbackstudios.dexter.MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".TypeEffectivenessActivity"
+            android:name=".activities.TypeEffectivenessActivity"
             android:label="@string/title_activity_type_effectiveness"
-            android:parentActivityName=".DetailsActivity" >
+            android:parentActivityName=".activities.DetailsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.trasselbackstudios.dexter.DetailsActivity" />
+                android:value=".activities.DetailsActivity" />
         </activity>
     </application>
 

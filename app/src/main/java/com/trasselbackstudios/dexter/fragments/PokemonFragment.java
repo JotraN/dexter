@@ -1,4 +1,4 @@
-package com.trasselbackstudios.dexter;
+package com.trasselbackstudios.dexter.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.trasselbackstudios.dexter.R;
+import com.trasselbackstudios.dexter.activities.DetailsActivity;
 import com.trasselbackstudios.dexter.data.PokemonContract;
 import com.trasselbackstudios.dexter.data.PokemonDatabase;
 

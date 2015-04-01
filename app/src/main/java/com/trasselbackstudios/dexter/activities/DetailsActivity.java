@@ -1,4 +1,4 @@
-package com.trasselbackstudios.dexter;
+package com.trasselbackstudios.dexter.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,25 +9,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 
+import com.trasselbackstudios.dexter.R;
 import com.trasselbackstudios.dexter.data.PokemonItem;
+import com.trasselbackstudios.dexter.fragments.DetailsFragment;
 
 
 public class DetailsActivity extends ActionBarActivity {
-    private GestureDetectorCompat mDetector;
+    private GestureDetectorCompat gestureDetector;
     private DetailsFragment detailsFragment = null;
-    private static String pokemonID = "";
+    private static String pokemonId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        mDetector = new GestureDetectorCompat(this, new NextPokemonGesture());
+        gestureDetector = new GestureDetectorCompat(this, new NextPokemonGesture());
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            pokemonID = extras.getString(Intent.EXTRA_TEXT);
+            pokemonId = extras.getString(Intent.EXTRA_TEXT);
             if (savedInstanceState == null)
-                sendToFragment(pokemonID);
+                sendToFragment(pokemonId);
         }
     }
 
@@ -41,7 +43,7 @@ public class DetailsActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
         if(detailsFragment == null)
-            sendToFragment(pokemonID);
+            sendToFragment(pokemonId);
     }
 
     private void sendToFragment(String id) {
@@ -56,24 +58,24 @@ public class DetailsActivity extends ActionBarActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        this.mDetector.onTouchEvent(event);
+        this.gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
 
     private class NextPokemonGesture extends GestureDetector.SimpleOnGestureListener {
-        private int max = 719;
-        private int min = 1;
+        private int maxId = 719;
+        private int minId = 1;
 
         @Override
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
             if (Math.abs(event1.getX() - event2.getX()) > 300 || Math.abs(velocityX) > 1000) {
-                int next = Integer.parseInt(pokemonID) + 1;
+                int next = Integer.parseInt(pokemonId) + 1;
                 if (velocityX > 0)
-                    next = Integer.parseInt(pokemonID) - 1;
-                if (next < min || next > max) return true;
-                pokemonID = String.valueOf(next);
-                detailsFragment.setupDetails(getWindow().getDecorView().getRootView(), new PokemonItem(getApplicationContext(), pokemonID));
+                    next = Integer.parseInt(pokemonId) - 1;
+                if (next < minId || next > maxId) return true;
+                pokemonId = String.valueOf(next);
+                detailsFragment.setupDetails(getWindow().getDecorView().getRootView(), new PokemonItem(getApplicationContext(), pokemonId));
             }
             return true;
         }
@@ -90,7 +92,7 @@ public class DetailsActivity extends ActionBarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_type_effectiveness:
-                Intent intent = new Intent(this, TypeEffectivenessActivity.class).putExtra(Intent.EXTRA_TEXT, pokemonID);
+                Intent intent = new Intent(this, TypeEffectivenessActivity.class).putExtra(Intent.EXTRA_TEXT, pokemonId);
                 startActivity(intent);
                 break;
             default:
@@ -99,7 +101,7 @@ public class DetailsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setPokemonID(String id) {
-        pokemonID = id;
+    public void setPokemonId(String id) {
+        pokemonId = id;
     }
 }

@@ -1,4 +1,4 @@
-package com.trasselbackstudios.dexter;
+package com.trasselbackstudios.dexter.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.trasselbackstudios.dexter.R;
 import com.trasselbackstudios.dexter.data.TypeEffectivenessItem;
 
 public class TypeEffectivenessFragment extends Fragment {

@@ -14,7 +14,7 @@ public class PokemonItem {
     public final String species;
     public final String types;
     public final String evo;
-    private int evoLevel = 0;
+    private int evoForm = 0;
 
     public PokemonItem(Context context, String id) {
         this.id = id;
@@ -37,13 +37,14 @@ public class PokemonItem {
         String[] evolutions = evo.split(",");
         PokemonDatabase db = new PokemonDatabase(context);
         for (String evolution : evolutions) {
+            // Evolution string format: 1@Name, where 1 is the evolution form.
             String name = evolution.substring(2);
             Cursor cursor = db.getPokemonId(name);
             String id = cursor.getString(0);
             PokemonItem pokemonItem = new PokemonItem(context, id);
-            pokemonItem.setEvoLevel(Integer.parseInt(evolution.substring(0, 1)));
-            if (pokemonItem.getEvoLevel() <= this.evoLevel)
-                this.evoLevel++;
+            pokemonItem.setEvoForm(Integer.parseInt(evolution.substring(0, 1)));
+            if (pokemonItem.getEvoForm() <= this.evoForm)
+                this.evoForm++;
             pokemonEntries.add(pokemonItem);
             cursor.close();
         }
@@ -51,11 +52,11 @@ public class PokemonItem {
         return pokemonEntries;
     }
 
-    public void setEvoLevel(int evoLevel) {
-        this.evoLevel = evoLevel;
+    public void setEvoForm(int evoForm) {
+        this.evoForm = evoForm;
     }
 
-    public int getEvoLevel() {
-        return evoLevel;
+    public int getEvoForm() {
+        return evoForm;
     }
 }
